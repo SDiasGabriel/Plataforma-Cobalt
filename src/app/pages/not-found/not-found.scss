@@ -1,0 +1,12 @@
+.not-found {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.not-found h1,
+.not-found p {
+  margin: 0;
+}

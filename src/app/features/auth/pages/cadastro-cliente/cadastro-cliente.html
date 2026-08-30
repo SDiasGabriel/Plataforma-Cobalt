@@ -1,0 +1,158 @@
+<main class="register-page">
+  <section class="register-card" aria-labelledby="register-title">
+    <img
+      class="register-logo"
+      src="/assets/logos/lg-cobalt-negativo.png"
+      alt="Cobalt"
+    />
+
+    <h1 id="register-title">Sua conta aberta em instantes.</h1>
+    <h2>Vamos começar?</h2>
+
+    <form class="register-form">
+      <div class="form-grid">
+        <app-cobalt-input
+          label="Como quer ser chamado(a)?"
+          name="apelido"
+          [(ngModel)]="apelido"
+        />
+
+
+        <div class="nome-email">
+            <app-cobalt-input
+            label="Digite seu nome completo"
+            name="nome"
+            [(ngModel)]="nome"
+            />
+        </div>
+
+        <div class="phone-field">
+          <span class="field-label">Número de Celular</span>
+          <div class="phone-field__controls">
+            <label class="country-code">
+              <select name="ddi" [(ngModel)]="ddi">
+                <option value="055">055</option>
+              </select>
+            </label>
+
+            <div class="celular">
+                <app-cobalt-input
+                    name="celular"
+                    type="tel"
+                    [(ngModel)]="celular"
+                />
+            </div>
+          </div>
+        </div>
+
+        <div class="nome-email">
+            <app-cobalt-input
+            label="e-mail"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            />
+        </div>
+      </div>
+
+      <h3>Senha de Acesso</h3>
+
+      <div class="security-note">
+        <span>
+            <img src="/assets/icons/actions/ico_info.svg"/>
+        </span>
+        <p>
+          Para sua segurança, recomendamos que seja composta por pelo menos 8 caracteres,
+          incluindo um caractere especial (!, @, # etc.), uma letra maiúscula,
+          uma minúscula, além de números.
+        </p>
+      </div>
+
+      <div class="form-grid password-grid">
+        <app-cobalt-input
+          label="Digite sua senha"
+          [type]="passwordType"
+          name="senha"
+          [iconEndSrc]="passwordIconSrc"
+          iconEndAlt="Mostrar ou ocultar senha"
+          [iconEndButton]="true"
+          (iconEndClick)="togglePasswordVisibility()"
+          [(ngModel)]="senha"
+        />
+
+        <app-cobalt-input
+          label="Confirme sua senha"
+          [type]="confirmPasswordType"
+          name="confirmarSenha"
+          [iconEndSrc]="confirmPasswordIconSrc"
+          iconEndAlt="Mostrar ou ocultar senha"
+          [iconEndButton]="true"
+          (iconEndClick)="toggleConfirmPasswordVisibility()"
+          [(ngModel)]="confirmarSenha"
+        />
+      </div>
+
+      <div class="divider"></div>
+
+      <section class="document-row">
+        <div>
+          <strong>Documento de identificação (CNH, RG, etc)</strong>
+          <span>Representante Legal que assinará a ficha cadastral</span>
+        </div>
+
+        <input
+          #documentInput
+          class="document-input"
+          type="file"
+          accept=".pdf,.png,.jpg,.jpeg"
+          (change)="onDocumentSelected($event)"
+        />
+
+        @if (selectedDocumentName) {
+          <div class="document-file">
+            <span class="document-file__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M7 2h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm6 1.8V8h4.2L13 3.8Z" />
+              </svg>
+            </span>
+            <span class="document-file__name">{{ selectedDocumentName }}</span>
+            <button
+              class="document-file__remove"
+              type="button"
+              aria-label="Remover documento"
+              (click)="removeDocument(documentInput)"
+            >
+              x
+            </button>
+          </div>
+        } @else {
+          <app-cobalt-button
+            label="Fazer upload"
+            size="sm"
+            iconEndSrc="/assets/icons/actions/ico-upload.svg"
+            iconEndAlt=""
+            (buttonClick)="documentInput.click()"
+          />
+        }
+      </section>
+
+      <label class="terms-row">
+        <input type="checkbox" name="acceptedTerms" [(ngModel)]="acceptedTerms" />
+        <span>
+          Concordo com os
+          <a href="/">termos de uso e política de privacidade da Cobalt</a>
+        </span>
+      </label>
+
+      <div class="actions-row">
+        <app-cobalt-button
+          label="Avançar"
+          type="submit"
+          iconEndSrc="/assets/icons/actions/seta-avancar-branca.svg"
+          iconEndAlt=""
+          [disabled]="true"
+        />
+      </div>
+    </form>
+  </section>
+</main>

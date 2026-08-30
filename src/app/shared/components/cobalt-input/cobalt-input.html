@@ -1,0 +1,30 @@
+<label class="cobalt-input" [class.cobalt-input--full]="fullWidth">
+  @if (label) {
+    <span class="cobalt-input__label">{{ label }}</span>
+  }
+
+  <span class="cobalt-input__control">
+    <input
+      [type]="type"
+      [value]="value"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [readOnly]="readonly"
+      (input)="onInput($event)"
+      (blur)="markAsTouched()"
+    />
+
+    @if (iconEndSrc && iconEndButton) {
+      <button
+        class="cobalt-input__icon-button"
+        type="button"
+        [attr.aria-label]="iconEndAlt"
+        (click)="onIconEndClick($event)"
+      >
+        <img class="cobalt-input__icon" [src]="iconEndSrc" alt="" />
+      </button>
+    } @else if (iconEndSrc) {
+      <img class="cobalt-input__icon" [src]="iconEndSrc" [alt]="iconEndAlt" />
+    }
+  </span>
+</label>

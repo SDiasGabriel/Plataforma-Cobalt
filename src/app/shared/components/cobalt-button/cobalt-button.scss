@@ -1,0 +1,72 @@
+:host {
+  display: inline-flex;
+}
+
+.cobalt-button {
+  align-items: center;
+  background: #3434e8;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgb(18 18 74 / 20%);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font: normal normal bold 24px/26px Montserrat;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 389px;
+  height: 70px;
+  padding: 0 1rem;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+  white-space: nowrap;
+}
+
+.cobalt-button:hover:not(:disabled) {
+  background: #2828d9;
+  box-shadow: 0 4px 10px rgb(18 18 74 / 22%);
+}
+
+.cobalt-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.cobalt-button:focus-visible {
+  outline: 3px solid rgb(52 52 232 / 28%);
+  outline-offset: 2px;
+}
+
+.cobalt-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.cobalt-button--small {
+  font-size: 0.75rem;
+  min-height: 2.375rem;
+  padding: 0 0.875rem;
+}
+
+.cobalt-button--full {
+  width: 100%;
+}
+
+.cobalt-button__icon {
+  display: block;
+  flex: 0 0 auto;
+  height: 1.125rem;
+  object-fit: contain;
+  width: 1.125rem;
+}
+
+.cobalt-button--small .cobalt-button__icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.cobalt-button__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

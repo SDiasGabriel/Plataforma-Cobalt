@@ -1,0 +1,18 @@
+<button
+  class="cobalt-button"
+  [class.cobalt-button--small]="size === 'sm'"
+  [class.cobalt-button--full]="fullWidth"
+  [type]="type"
+  [disabled]="disabled"
+  (click)="onClick($event)"
+>
+  @if (iconStartSrc) {
+    <img class="cobalt-button__icon" [src]="iconStartSrc" [alt]="iconStartAlt" />
+  }
+
+  <span class="cobalt-button__label">{{ label }}</span>
+
+  @if (iconEndSrc) {
+    <img class="cobalt-button__icon" [src]="iconEndSrc" [alt]="iconEndAlt" />
+  }
+</button>

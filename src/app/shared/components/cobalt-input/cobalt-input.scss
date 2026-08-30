@@ -1,0 +1,97 @@
+:host {
+  display: block;
+}
+
+.cobalt-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cobalt-input-label-gap, 0.375rem);
+}
+
+.cobalt-input--full {
+  width: 100%;
+}
+
+.cobalt-input__label {
+  color: var(--cobalt-input-label-color, #50505f);
+  font-family: var(--cobalt-input-label-font-family, Hanken Grotesk);
+  font-size: var(--cobalt-input-label-font-size, 12px);
+  font-style: var(--cobalt-input-label-font-style, normal);
+  font-weight: var(--cobalt-input-label-font-weight, 600);
+  line-height: var(--cobalt-input-label-line-height, 16px);
+}
+
+.cobalt-input__control {
+  align-items: center;
+  background: #F8F8F8 0% 0% no-repeat padding-box;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: flex;
+  height: 44px;
+  padding: 0 0.75rem;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.cobalt-input__control:focus-within {
+  background: #fff;
+  border-color: #3434e8;
+  box-shadow: 0 0 0 3px rgb(52 52 232 / 12%);
+}
+
+.cobalt-input__control input {
+  background: transparent;
+  border: 0;
+  color: #161624;
+  flex: 1;
+  font: normal normal bold 14px/20px Hanken Grotesk;
+  min-width: 0;
+  outline: 0;
+  padding: 0;
+}
+
+.cobalt-input__control input::placeholder {
+  color: #9a9aa8;
+  font-weight: 500;
+}
+
+.cobalt-input__control input:disabled {
+  cursor: not-allowed;
+}
+
+.cobalt-input:has(input:disabled) {
+  opacity: 0.55;
+}
+
+.cobalt-input__icon {
+  display: block;
+  flex: 0 0 auto;
+  height: 1rem;
+  margin-left: 0.625rem;
+  object-fit: contain;
+  width: 1rem;
+}
+
+.cobalt-input__icon-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  margin-left: 0.625rem;
+  padding: 0;
+}
+
+.cobalt-input__icon-button .cobalt-input__icon {
+  margin-left: 0;
+}
+
+.cobalt-input__icon-button:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid rgb(52 52 232 / 25%);
+  outline-offset: 2px;
+}

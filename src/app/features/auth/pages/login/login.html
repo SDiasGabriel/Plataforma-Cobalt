@@ -1,0 +1,87 @@
+<main class="login-page">
+  <div class="login-stage">
+    <section class="login-hero" aria-label="Cobalt">
+      <img src="/assets/images/auth/ft-home-desktop.png" alt="" />
+
+      <div class="login-hero__content">
+        <img
+          class="login-hero__logo"
+          src="/assets/logos/lg-cobalt-negativo.png"
+          alt="Cobalt"
+        />
+
+        <p class="login-hero__title">
+          Sua <strong>vantagem competitiva</strong> no Câmbio e Cripto.
+        </p>
+
+        <div class="login-hero__benefits">
+          <div>
+            <strong>TAXA ZERO</strong>
+            <span>de intermediação</span>
+          </div>
+          <div>
+            <span>Consultoria</span>
+            <strong>GRATUITA</strong>
+          </div>
+          <div>
+            <strong>ARBITRAGEM</strong>
+            <span>com múltiplas cotações</span>
+          </div>
+        </div>
+
+        <div class="login-hero__cta">
+          <span>Ainda não tem conta?</span>
+          <app-cobalt-button label="Abra agora!" [fullWidth]="true" (buttonClick)="navigateToCadastro()" />
+        </div>
+      </div>
+    </section>
+
+    <section class="login-panel">
+      <div class="login-card">
+        <h1>
+          <span>Seja bem-vindo</span>
+          <span>ao <strong>Hub Financeiro</strong></span>
+          <span><strong>da Cobalt.</strong></span>
+        </h1>
+
+        <form class="login-form" (ngSubmit)="submitLogin()">
+          <h2>Faça o login em sua conta</h2>
+
+          <app-cobalt-input
+            label="Digite seu e-mail"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+          />
+
+          <div class="password-row">
+            <app-cobalt-input
+              label="Digite sua senha"
+              [type]="passwordInputType"
+              name="password"
+              [iconEndSrc]="passwordIconSrc"
+              [iconEndAlt]="passwordIconAlt"
+              [iconEndButton]="true"
+              (iconEndClick)="togglePasswordVisibility()"
+              [(ngModel)]="password"
+            />
+
+            <a href="/auth/cadastro">Esqueci minha senha</a>
+          </div>
+
+          <label class="keep-logged">
+            <input
+              type="checkbox"
+              name="keepLogged"
+              role="switch"
+              [(ngModel)]="keepLogged"
+            />
+            <span>Me manter logado neste dispositivo</span>
+          </label>
+
+          <app-cobalt-button label="Acessar" type="submit" [fullWidth]="true" />
+        </form>
+      </div>
+    </section>
+  </div>
+</main>

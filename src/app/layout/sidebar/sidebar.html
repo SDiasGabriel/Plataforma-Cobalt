@@ -1,0 +1,45 @@
+<aside class="sidebar" aria-label="Menu principal">
+  <a class="sidebar__logo" routerLink="/">
+    <img src="/assets/images/empty-states/lg-cobalt-positivo.png" alt="Cobalt" />
+  </a>
+
+  <div class="sidebar__user">
+    <span class="sidebar__avatar">SS</span>
+    <strong>Samantha Sorpreso</strong>
+  </div>
+
+  <nav class="sidebar__nav">
+    <a
+      class="sidebar__link"
+      routerLink="/dashboard"
+      routerLinkActive="sidebar__link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <img src="/assets/icons/navigation/ico_dash-blue.svg" alt="" />
+      <span>Dashboard</span>
+    </a>
+
+    <a class="sidebar__link sidebar__link--muted" routerLink="/empresas">
+      <img src="/assets/icons/navigation/ico_empresa_grey.svg" alt="" />
+      <span>Empresas</span>
+    </a>
+
+    <a class="sidebar__link sidebar__link--muted" routerLink="/operacoes">
+      <img src="/assets/icons/navigation/ico_operacoes_grey.svg" alt="" />
+      <span>Operações</span>
+    </a>
+
+    <a class="sidebar__link sidebar__link--muted" routerLink="/usuarios">
+      <img src="/assets/icons/navigation/ico_usuarios_grey.svg" alt="" />
+      <span>Usuários</span>
+    </a>
+  </nav>
+
+  <nav class="sidebar__nav sidebar__nav--account">
+    <a class="sidebar__link sidebar__link--muted" routerLink="/minha-conta">
+      <img src="/assets/icons/navigation/ico_conta_grey.svg" alt="" />
+      <span>Minha Conta</span>
+      <span class="sidebar__badge">1</span>
+    </a>
+  </nav>
+</aside>
