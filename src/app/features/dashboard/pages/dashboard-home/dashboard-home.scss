@@ -1,3 +1,219 @@
 .dashboard-home {
+  background: #f7f7f9;
   min-height: 100%;
+  padding: 53px 82px;
+}
+
+.dashboard-home h2 {
+  font: normal normal normal 26px/40px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #050A17;
+  margin: 0 0 36px;
+}
+
+.dashboard-home h2 strong {
+  font: normal normal bold 26px/40px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #050A17;
+}
+
+.onboarding-card {
+  align-items: center;
+  background: #fff;
+  border-radius: 9px;
+  box-shadow: 0 4px 18px rgb(29 29 55 / 7%);
+  display: grid;
+  grid-template-columns: 400px 480px 288px;
+  min-height: 105px;
+  padding: 22px 27px 22px 31px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.onboarding-card__status {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+}
+
+.onboarding-card__status img {
+  height: 31px;
+  width: 31px;
+}
+
+.onboarding-card__status span {
+  font: normal normal 300 16px/40px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #050A17;
+  opacity: 1;
+}
+
+.onboarding-card__status strong {
+  font: normal normal bold 20px/22px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #050A17;
+  opacity: 1;
+}
+
+.onboarding-steps {
+  padding: 0 18px;
+}
+
+.onboarding-steps__track {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 20px;
+  position: relative;
+}
+
+.onboarding-steps__line {
+  background: #3434e8;
+  height: 7px;
+  left: 7px;
+  position: absolute;
+  right: 7px;
+  top: 7px;
+}
+
+.onboarding-steps__dot {
+  background: #3434e8;
+  border-radius: 50%;
+  height: 17px;
+  position: absolute;
+  top: 2px;
+  width: 17px;
+  z-index: 1;
+}
+
+.onboarding-steps__dot:nth-of-type(2) {
+  left: 0;
+}
+
+.onboarding-steps__dot:nth-of-type(3) {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.onboarding-steps__dot--current {
+  background: #fff;
+  border: 5px solid #ff861c;
+  right: 0;
+}
+
+.onboarding-steps__labels {
+  display: grid;
+  grid-template-columns: 216px 213px 135px;
+  margin-top: 2px;
+}
+
+.onboarding-steps__labels strong {
+  font: normal normal bold 14px/26px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #050A17;
+  opacity: 1;
+}
+
+.onboarding-steps__labels strong:last-child {
+  color: #ff861c;
+}
+
+.analysis-box {
+  background: #fff1e2;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 64px;
+  padding: 0 24px;
+}
+
+.analysis-box strong {
+  color: #ff861c;
+  font: normal normal 800 16px/20px Hanken Grotesk;
+}
+
+.analysis-box span {
+  color: #262632;
+  font: normal normal 700 11px/14px Hanken Grotesk;
+}
+
+.dashboard-cards {
+  display: grid;
+  gap: 11px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 20px;
+}
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 9px;
+  box-shadow: 0 4px 18px rgb(29 29 55 / 7%);
+  min-height: 243px;
+  padding: 31px 41px;
+}
+
+.dashboard-card h3 {
+  align-items: center;
+  display: flex;font: normal normal normal 24px/50px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #050A17;
+  gap: 12px;
+  margin: 0 0 26px;
+}
+
+.dashboard-card h3 strong {
+  font: normal normal bold 24px/50px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #050A17;
+}
+
+.dashboard-card p {
+  font: normal normal normal 18px/24px Hanken Grotesk;
+  letter-spacing: 0px;
+  color: #848595;
+  opacity: 1;
+  margin: 0 0 48px;
+  max-width: 306px;
+}
+
+.dashboard-card app-internal-button {
+  width: 236px;
+}
+
+.dashboard-card:nth-child(2) app-internal-button {
+  width: 218px;
+}
+
+.dashboard-card:nth-child(2) ::ng-deep .internal-button {
+  background: #fff;
+  border: 2px solid #3434e8;
+  color: #3434e8;
+}
+
+.dashboard-card__badge {
+  align-items: center;
+  background: #3434e8;
+  border-radius: 50%;
+  color: #fff;
+  display: inline-flex;
+  font: normal normal 800 11px/11px Hanken Grotesk;
+  height: 21px;
+  justify-content: center;
+  width: 21px;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-home {
+    padding: 40px;
+  }
+
+  .onboarding-card {
+    gap: 24px;
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
 }

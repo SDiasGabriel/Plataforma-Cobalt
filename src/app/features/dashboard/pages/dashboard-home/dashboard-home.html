@@ -1,1 +1,68 @@
-<section class="dashboard-home"></section>
+<section class="dashboard-home">
+  <h2>Olá,<strong> Sam</strong>! Seja Bem-Vindo(a)!</h2>
+
+  <section class="onboarding-card" aria-label="Processo de onboarding">
+    <div class="onboarding-card__status">
+      <img src="/assets/icons/navigation/ico-timer.svg" alt="" />
+      <div>
+        <span>Processo de Onboarding em andamento</span>
+        <strong><br>Sua documentação está em análise</strong>
+      </div>
+    </div>
+
+    <div class="onboarding-steps" aria-hidden="true">
+      <div class="onboarding-steps__track">
+        <span class="onboarding-steps__line"></span>
+        <span class="onboarding-steps__dot onboarding-steps__dot--done"></span>
+        <span class="onboarding-steps__dot onboarding-steps__dot--done"></span>
+        <span class="onboarding-steps__dot onboarding-steps__dot--current"></span>
+      </div>
+
+      <div class="onboarding-steps__labels">
+        <strong>Cadastro realizado</strong>
+        <strong>Envio Documentos</strong>
+        <strong>Análise Documentos</strong>
+      </div>
+    </div>
+
+    <div class="analysis-box">
+      <strong>Em análise</strong>
+      <span>Estamos avaliando seus documentos</span>
+    </div>
+  </section>
+
+  <section class="dashboard-cards">
+    <article class="dashboard-card">
+      <h3>Minhas <strong>Operações</strong></h3>
+      <p>Você ainda não possui operações. Finalize seu processo cadastral e solicite sua cotação.</p>
+
+      <app-internal-button
+        label="Solicitar cotação"
+        iconStartSrc="/assets/icons/actions/ico-whatsapp-white.svg"
+        iconStartAlt=""
+        [disabled]="true"
+      />
+    </article>
+
+    <article class="dashboard-card">
+      <h3>
+        Minha <strong>Documentação</strong>
+        <span class="dashboard-card__badge">1</span>
+      </h3>
+      <p>Seu documento de identificação está sob análise de nossa equipe.</p>
+
+      <app-internal-button label="Ver processo" />
+    </article>
+
+    <article class="dashboard-card">
+      <h3>Minhas <strong>Empresas</strong></h3>
+      <p>Você ainda não possui empresas cadastradas.</p>
+
+      <app-internal-button
+        label="Cadastrar"
+        iconEndSrc="/assets/icons/actions/seta-avancar-branca.svg"
+        iconEndAlt=""
+      />
+    </article>
+  </section>
+</section>

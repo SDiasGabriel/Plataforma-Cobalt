@@ -1,0 +1,18 @@
+<button
+  class="internal-button"
+  [class.internal-button--small]="size === 'sm'"
+  [class.internal-button--full]="fullWidth"
+  [type]="type"
+  [disabled]="disabled"
+  (click)="onClick($event)"
+>
+  @if (iconStartSrc) {
+    <img class="internal-button__icon" [src]="iconStartSrc" [alt]="iconStartAlt" />
+  }
+
+  <span class="internal-button__label">{{ label }}</span>
+
+  @if (iconEndSrc) {
+    <img class="internal-button__icon" [src]="iconEndSrc" [alt]="iconEndAlt" />
+  }
+</button>
