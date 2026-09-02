@@ -1,0 +1,18 @@
+@if (errorDialogService.dialog(); as dialog) {
+  <div class="error-dialog-backdrop" role="presentation">
+    <section
+      class="error-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="global-error-dialog-message"
+    >
+      <p id="global-error-dialog-message">{{ dialog.message }}</p>
+
+      @if (dialog.code) {
+        <span>Codigo: {{ dialog.code }}</span>
+      }
+
+      <button type="button" (click)="errorDialogService.close()">Sair</button>
+    </section>
+  </div>
+}

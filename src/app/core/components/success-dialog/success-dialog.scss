@@ -1,0 +1,57 @@
+:host {
+  position: relative;
+  z-index: 1000;
+}
+
+.success-dialog-backdrop {
+  align-items: center;
+  background: rgb(0 0 0 / 32%);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+}
+
+.success-dialog {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 14px 32px rgb(0 0 0 / 24%);
+  min-height: 118px;
+  padding: 26px 12px 8px 32px;
+  position: relative;
+  width: 680px;
+}
+
+.success-dialog p {
+  color: #116b3b;
+  font: normal normal 500 17px/24px Montserrat, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  margin: 0;
+  padding-right: 24px;
+}
+
+.success-dialog button {
+  background: #bfe5cd;
+  border: 0;
+  border-radius: 4px;
+  bottom: 8px;
+  color: #116b3b;
+  cursor: pointer;
+  font: normal normal 700 14px/18px Montserrat, Arial, sans-serif;
+  min-width: 65px;
+  padding: 10px 16px;
+  position: absolute;
+  right: 8px;
+}
+
+.success-dialog button:focus-visible {
+  outline: 3px solid rgb(17 107 59 / 18%);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .success-dialog {
+    width: 100%;
+  }
+}

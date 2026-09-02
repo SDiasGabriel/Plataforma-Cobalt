@@ -1,0 +1,14 @@
+@if (successDialogService.dialog(); as dialog) {
+  <div class="success-dialog-backdrop" role="presentation">
+    <section
+      class="success-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="global-success-dialog-message"
+    >
+      <p id="global-success-dialog-message">{{ dialog.message }}</p>
+
+      <button type="button" (click)="successDialogService.close()">Ok</button>
+    </section>
+  </div>
+}

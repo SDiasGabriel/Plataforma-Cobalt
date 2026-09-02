@@ -1,5 +1,5 @@
 <section class="dashboard-home">
-  <h2>Olá,<strong> Sam</strong>! Seja Bem-Vindo(a)!</h2>
+  <h2>Olá,<strong> {{ userSessionService.displayName() || 'usuário' }}</strong>! Seja Bem-Vindo(a)!</h2>
 
   <section class="onboarding-card" aria-label="Processo de onboarding">
     <div class="onboarding-card__status">

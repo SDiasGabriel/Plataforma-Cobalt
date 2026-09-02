@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { getApiErrorCode, getApiErrorMessage } from '../../../../core/http/api-error';
+import { ErrorDialogService } from '../../../../core/services/error-dialog.service';
 import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
 
 @Component({
@@ -10,10 +13,16 @@ import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
   styleUrl: './login.scss',
 })
 export class Login {
-  email = 'ssorpreso@gmail.com';
-  password = '@Cobalt1234';
-  keepLogged = true;
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+
+  loginForm = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    senha: ['', Validators.required],
+    keepLogged: [true],
+  });
+
   showPassword = false;
+  isLoading = false;
 
   get passwordInputType(): 'password' | 'text' {
     return this.showPassword ? 'text' : 'password';
@@ -31,15 +40,46 @@ export class Login {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly errorDialogService: ErrorDialogService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
   ) {}
 
   submitLogin(): void {
-    this.authService.login();
+    if (this.isLoading) {
+      return;
+    }
 
-    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
-    this.router.navigateByUrl(returnUrl);
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.errorDialogService.open({
+        message: 'Preencha seu e-mail e senha para acessar.',
+      });
+      return;
+    }
+
+    this.isLoading = true;
+    const { email, senha } = this.loginForm.getRawValue();
+
+    this.authService
+      .login({
+        Email: email,
+        Senha: senha,
+      })
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
+          this.router.navigateByUrl(returnUrl);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorDialogService.open({
+            message: getApiErrorMessage(error, 'E-mail ou senha inválidos.'),
+            code: getApiErrorCode(error),
+          });
+        },
+      });
   }
 
   togglePasswordVisibility(): void {

@@ -1,0 +1,58 @@
+:host {
+  position: relative;
+  z-index: 1000;
+}
+
+.error-dialog-backdrop {
+  align-items: center;
+  background: rgb(0 0 0 / 32%);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+}
+
+.error-dialog {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 14px 32px rgb(0 0 0 / 24%);
+  min-height: 118px;
+  padding: 26px 12px 8px 32px;
+  position: relative;
+  width: 680px;
+}
+
+.error-dialog p {
+  color: #5c151c;
+  font: normal normal 500 17px/24px Montserrat, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  margin: 0;
+  padding-right: 24px;
+}
+
+.error-dialog span {
+  color: #5c151c;
+  display: block;
+  font: normal normal 600 13px/18px Montserrat, Arial, sans-serif;
+  margin-top: 8px;
+}
+
+.error-dialog button {
+  background: #d2adaf;
+  border: 0;
+  border-radius: 4px;
+  bottom: 8px;
+  color: #5c151c;
+  cursor: pointer;
+  font: normal normal 700 14px/18px Montserrat, Arial, sans-serif;
+  min-width: 65px;
+  padding: 10px 16px;
+  position: absolute;
+  right: 8px;
+}
+
+.error-dialog button:focus-visible {
+  outline: 3px solid rgb(92 21 28 / 18%);
+  outline-offset: 2px;
+}

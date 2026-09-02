@@ -9,20 +9,20 @@
     <h1 id="register-title">Sua conta aberta em instantes.</h1>
     <h2>Vamos começar?</h2>
 
-    <form class="register-form">
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
       <div class="form-grid">
         <app-cobalt-input
           label="Como quer ser chamado(a)?"
-          name="apelido"
-          [(ngModel)]="apelido"
+          formControlName="apelido"
+          placeholder="Digite"
         />
 
 
         <div class="nome-email">
             <app-cobalt-input
             label="Digite seu nome completo"
-            name="nome"
-            [(ngModel)]="nome"
+            formControlName="nome"
+            placeholder="Digite"
             />
         </div>
 
@@ -30,7 +30,7 @@
           <span class="field-label">Número de Celular</span>
           <div class="phone-field__controls">
             <label class="country-code">
-              <select name="ddi" [(ngModel)]="ddi">
+              <select formControlName="ddi">
                 <option value="055">055</option>
               </select>
             </label>
@@ -39,7 +39,8 @@
                 <app-cobalt-input
                     name="celular"
                     type="tel"
-                    [(ngModel)]="celular"
+                    formControlName="celular"
+                    placeholder="Digite"
                 />
             </div>
           </div>
@@ -49,8 +50,8 @@
             <app-cobalt-input
             label="e-mail"
             type="email"
-            name="email"
-            [(ngModel)]="email"
+            placeholder="Digite"
+            formControlName="email"
             />
         </div>
       </div>
@@ -72,23 +73,23 @@
         <app-cobalt-input
           label="Digite sua senha"
           [type]="passwordType"
-          name="senha"
+          formControlName="senha"
           [iconEndSrc]="passwordIconSrc"
           iconEndAlt="Mostrar ou ocultar senha"
+          placeholder="Digite"
           [iconEndButton]="true"
           (iconEndClick)="togglePasswordVisibility()"
-          [(ngModel)]="senha"
         />
 
         <app-cobalt-input
           label="Confirme sua senha"
           [type]="confirmPasswordType"
-          name="confirmarSenha"
+          formControlName="confirmarSenha"
           [iconEndSrc]="confirmPasswordIconSrc"
           iconEndAlt="Mostrar ou ocultar senha"
           [iconEndButton]="true"
+          placeholder="Digite"
           (iconEndClick)="toggleConfirmPasswordVisibility()"
-          [(ngModel)]="confirmarSenha"
         />
       </div>
 
@@ -137,7 +138,7 @@
       </section>
 
       <label class="terms-row">
-        <input type="checkbox" name="acceptedTerms" [(ngModel)]="acceptedTerms" />
+        <input type="checkbox" formControlName="acceptedTerms" />
         <span>
           Concordo com os
           <a href="/">termos de uso e política de privacidade da Cobalt</a>
@@ -146,11 +147,11 @@
 
       <div class="actions-row">
         <app-cobalt-button
-          label="Avançar"
+          [label]="isLoading ? 'Cadastrando...' : 'Avançar'"
           type="submit"
           iconEndSrc="/assets/icons/actions/seta-avancar-branca.svg"
           iconEndAlt=""
-          [disabled]="true"
+          [disabled]="isLoading || registerForm.invalid"
         />
       </div>
     </form>

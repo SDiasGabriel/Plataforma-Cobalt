@@ -44,26 +44,26 @@
           <span><strong>da Cobalt.</strong></span>
         </h1>
 
-        <form class="login-form" (ngSubmit)="submitLogin()">
+        <form class="login-form" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
           <h2>Faça o login em sua conta</h2>
 
           <app-cobalt-input
             label="Digite seu e-mail"
             type="email"
-            name="email"
-            [(ngModel)]="email"
+            formControlName="email"
+            placeholder="Digite"
           />
 
           <div class="password-row">
             <app-cobalt-input
               label="Digite sua senha"
               [type]="passwordInputType"
-              name="password"
+              formControlName="senha"
               [iconEndSrc]="passwordIconSrc"
               [iconEndAlt]="passwordIconAlt"
               [iconEndButton]="true"
               (iconEndClick)="togglePasswordVisibility()"
-              [(ngModel)]="password"
+              placeholder="Digite"
             />
 
             <a href="/auth/cadastro">Esqueci minha senha</a>
@@ -72,14 +72,18 @@
           <label class="keep-logged">
             <input
               type="checkbox"
-              name="keepLogged"
               role="switch"
-              [(ngModel)]="keepLogged"
+              formControlName="keepLogged"
             />
             <span>Me manter logado neste dispositivo</span>
           </label>
 
-          <app-cobalt-button label="Acessar" type="submit" [fullWidth]="true" />
+          <app-cobalt-button
+            [label]="isLoading ? 'Acessando...' : 'Acessar'"
+            type="submit"
+            [disabled]="isLoading"
+            [fullWidth]="true"
+          />
         </form>
       </div>
     </section>

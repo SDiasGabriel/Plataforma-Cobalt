@@ -4,8 +4,8 @@
   </a>
 
   <div class="sidebar__user">
-    <span class="sidebar__avatar">SS</span>
-    <strong>Samantha Sorpreso</strong>
+    <span class="sidebar__avatar">{{ userSessionService.initials() }}</span>
+    <strong>{{ userSessionService.displayName() || 'Usuário' }}</strong>
   </div>
 
   <nav class="sidebar__nav">
