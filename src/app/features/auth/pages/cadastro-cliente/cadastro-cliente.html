@@ -17,14 +17,19 @@
           placeholder="Digite"
         />
 
-
         <div class="nome-email">
-            <app-cobalt-input
+          <app-cobalt-input
             label="Digite seu nome completo"
             formControlName="nome"
             placeholder="Digite"
-            />
+          />
         </div>
+
+        <app-cobalt-input
+          label="CPF"
+          formControlName="cpf"
+          placeholder="Digite"
+        />
 
         <div class="phone-field">
           <span class="field-label">Número de Celular</span>
@@ -36,23 +41,23 @@
             </label>
 
             <div class="celular">
-                <app-cobalt-input
-                    name="celular"
-                    type="tel"
-                    formControlName="celular"
-                    placeholder="Digite"
-                />
+              <app-cobalt-input
+                name="celular"
+                type="tel"
+                formControlName="celular"
+                placeholder="Digite"
+              />
             </div>
           </div>
         </div>
 
         <div class="nome-email">
-            <app-cobalt-input
+          <app-cobalt-input
             label="e-mail"
             type="email"
             placeholder="Digite"
             formControlName="email"
-            />
+          />
         </div>
       </div>
 
@@ -60,7 +65,7 @@
 
       <div class="security-note">
         <span>
-            <img src="/assets/icons/actions/ico_info.svg"/>
+          <img src="/assets/icons/actions/ico_info.svg" alt="" />
         </span>
         <p>
           Para sua segurança, recomendamos que seja composta por pelo menos 8 caracteres,
@@ -98,7 +103,7 @@
       <section class="document-row">
         <div>
           <strong>Documento de identificação (CNH, RG, etc)</strong>
-          <span>Representante Legal que assinará a ficha cadastral</span>
+          <span>Cadastro do usuário PF</span>
         </div>
 
         <input
@@ -151,7 +156,7 @@
           type="submit"
           iconEndSrc="/assets/icons/actions/seta-avancar-branca.svg"
           iconEndAlt=""
-          [disabled]="isLoading || registerForm.invalid"
+          [disabled]="!canSubmit"
         />
       </div>
     </form>

@@ -59,13 +59,13 @@ export class Login {
     }
 
     this.isLoading = true;
-    const { email, senha } = this.loginForm.getRawValue();
+    const { email, senha, keepLogged } = this.loginForm.getRawValue();
 
     this.authService
       .login({
         Email: email,
         Senha: senha,
-      })
+      }, keepLogged)
       .subscribe({
         next: () => {
           this.isLoading = false;

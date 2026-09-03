@@ -5,8 +5,8 @@
     <div class="onboarding-card__status">
       <img src="/assets/icons/navigation/ico-timer.svg" alt="" />
       <div>
-        <span>Processo de Onboarding em andamento</span>
-        <strong><br>Sua documentação está em análise</strong>
+        <span>{{ statusConfig.processTitle }}</span>
+        <strong><br>{{ statusConfig.processDescription }}</strong>
       </div>
     </div>
 
@@ -26,8 +26,8 @@
     </div>
 
     <div class="analysis-box">
-      <strong>Em análise</strong>
-      <span>Estamos avaliando seus documentos</span>
+      <strong>{{ statusConfig.statusTitle }}</strong>
+      <span>{{ statusConfig.statusDescription }}</span>
     </div>
   </section>
 
@@ -47,9 +47,11 @@
     <article class="dashboard-card">
       <h3>
         Minha <strong>Documentação</strong>
-        <span class="dashboard-card__badge">1</span>
+        @if (statusConfig.documentationPendingCount) {
+          <span class="dashboard-card__badge">{{ statusConfig.documentationPendingCount }}</span>
+        }
       </h3>
-      <p>Seu documento de identificação está sob análise de nossa equipe.</p>
+      <p>{{ statusConfig.documentationMessage }}</p>
 
       <app-internal-button label="Ver processo" />
     </article>

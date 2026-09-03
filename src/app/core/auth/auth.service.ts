@@ -21,7 +21,7 @@ export class AuthService {
     private readonly userSessionService: UserSessionService,
   ) {}
 
-  login(credentials: Login): Observable<LoginResponse> {
+  login(credentials: Login, keepLogged: boolean): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/api/Autenticacao/Login`, credentials)
       .pipe(
@@ -33,7 +33,7 @@ export class AuthService {
 
           return response;
         }),
-        tap((response) => this.saveSession(response)),
+        tap((response) => this.saveSession(response, keepLogged)),
       );
   }
 
@@ -52,6 +52,8 @@ export class AuthService {
 
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.refreshTokenKey);
+    sessionStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.refreshTokenKey);
   }
 
   isAuthenticated(): boolean {
@@ -63,7 +65,7 @@ export class AuthService {
       return null;
     }
 
-    return localStorage.getItem(this.tokenKey);
+    return localStorage.getItem(this.tokenKey) ?? sessionStorage.getItem(this.tokenKey);
   }
 
   getRefreshToken(): string | null {
@@ -71,20 +73,23 @@ export class AuthService {
       return null;
     }
 
-    return localStorage.getItem(this.refreshTokenKey);
+    return localStorage.getItem(this.refreshTokenKey) ?? sessionStorage.getItem(this.refreshTokenKey);
   }
 
-  private saveSession(response: LoginResponse): void {
+  private saveSession(response: LoginResponse, keepLogged: boolean): void {
     if (!this.isBrowser()) {
       return;
     }
 
+    this.logout();
+    const storage = keepLogged ? localStorage : sessionStorage;
+
     if (response.token) {
-      localStorage.setItem(this.tokenKey, response.token);
+      storage.setItem(this.tokenKey, response.token);
     }
 
     if (response.refreshToken) {
-      localStorage.setItem(this.refreshTokenKey, response.refreshToken);
+      storage.setItem(this.refreshTokenKey, response.refreshToken);
     }
   }
 

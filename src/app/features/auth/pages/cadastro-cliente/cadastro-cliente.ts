@@ -15,6 +15,9 @@ import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
   styleUrl: './cadastro-cliente.scss',
 })
 export class CadastroCliente {
+  private readonly allowedDocumentTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+  private readonly maxDocumentSizeInBytes = 50 * 1024 * 1024;
+  private readonly termsVersion = '2026-09-01';
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly authService = inject(AuthService);
   private readonly errorDialogService = inject(ErrorDialogService);
@@ -24,10 +27,11 @@ export class CadastroCliente {
   registerForm = this.formBuilder.group({
     apelido: ['', Validators.required],
     nome: ['', Validators.required],
+    cpf: ['', Validators.required],
     ddi: ['55', Validators.required],
-    celular: ['(11) X.XXXX-XXXX', Validators.required],
+    celular: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    senha: ['', [Validators.required, Validators.minLength(8)]],
+    senha: ['', [Validators.required, this.passwordPolicyValidator]],
     confirmarSenha: ['', Validators.required],
     acceptedTerms: [false, Validators.requiredTrue],
   }, { validators: this.passwordMatchValidator });
@@ -37,6 +41,10 @@ export class CadastroCliente {
   showConfirmPassword = false;
   selectedDocument: File | null = null;
   selectedDocumentName = '';
+
+  get canSubmit(): boolean {
+    return this.registerForm.valid && !!this.selectedDocument && !this.isLoading;
+  }
 
   get passwordType(): 'password' | 'text' {
     return this.showPassword ? 'text' : 'password';
@@ -70,23 +78,41 @@ export class CadastroCliente {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
-    this.selectedDocument = file ?? null;
-    this.selectedDocumentName = file?.name ?? '';
+    if (!file) {
+      this.selectedDocument = null;
+      this.selectedDocumentName = '';
+      return;
+    }
+
+    if (!this.allowedDocumentTypes.includes(file.type)) {
+      this.clearDocumentInput(input);
+      this.errorDialogService.open({
+        message: 'Arquivo inválido. Envie um documento em PDF, PNG, JPG ou JPEG.',
+      });
+      return;
+    }
+
+    if (file.size > this.maxDocumentSizeInBytes) {
+      this.clearDocumentInput(input);
+      this.errorDialogService.open({
+        message: 'O documento deve ter no máximo 50MB.',
+      });
+      return;
+    }
+
+    this.selectedDocument = file;
+    this.selectedDocumentName = file.name;
   }
 
   removeDocument(fileInput: HTMLInputElement): void {
-    this.selectedDocument = null;
-    this.selectedDocumentName = '';
-    fileInput.value = '';
+    this.clearDocumentInput(fileInput);
   }
 
   async submitRegister(): Promise<void> {
-    if (this.registerForm.invalid) {
+    if (this.registerForm.invalid || !this.selectedDocument) {
       this.registerForm.markAllAsTouched();
       this.errorDialogService.open({
-        message: this.registerForm.hasError('passwordMismatch')
-          ? 'As senhas informadas não conferem.'
-          : 'Preencha todos os campos obrigatórios para continuar.',
+        message: this.getRegisterValidationMessage(),
       });
       return;
     }
@@ -96,9 +122,7 @@ export class CadastroCliente {
     let documento: string | null = null;
 
     try {
-      documento = this.selectedDocument
-        ? await this.convertFileToBase64(this.selectedDocument)
-        : null;
+      documento = await this.convertFileToBase64(this.selectedDocument);
     } catch {
       this.isLoading = false;
       this.errorDialogService.open({
@@ -106,13 +130,16 @@ export class CadastroCliente {
       });
       return;
     }
+
     const payload: Register = {
       apelido: formValue.apelido,
       nome: formValue.nome,
+      cpf: formValue.cpf,
       telefone: `${formValue.ddi} ${formValue.celular}`,
       email: formValue.email,
       senha: formValue.senha,
       documento,
+      versaoTermos: this.termsVersion,
     };
 
     this.authService.registerClient(payload)
@@ -132,6 +159,12 @@ export class CadastroCliente {
       });
   }
 
+  private clearDocumentInput(fileInput: HTMLInputElement): void {
+    this.selectedDocument = null;
+    this.selectedDocumentName = '';
+    fileInput.value = '';
+  }
+
   private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const senha = control.get('senha')?.value;
     const confirmarSenha = control.get('confirmarSenha')?.value;
@@ -141,6 +174,46 @@ export class CadastroCliente {
     }
 
     return senha === confirmarSenha ? null : { passwordMismatch: true };
+  }
+
+  private passwordPolicyValidator(control: AbstractControl): ValidationErrors | null {
+    const value = String(control.value ?? '');
+
+    if (!value) {
+      return null;
+    }
+
+    const isValid = value.length >= 8
+      && /[A-Z]/.test(value)
+      && /[a-z]/.test(value)
+      && /[0-9]/.test(value)
+      && /[^A-Za-z0-9]/.test(value);
+
+    return isValid ? null : { passwordPolicy: true };
+  }
+
+  private getRegisterValidationMessage(): string {
+    if (this.registerForm.get('email')?.hasError('email')) {
+      return 'Informe um e-mail válido para continuar.';
+    }
+
+    if (this.registerForm.get('senha')?.hasError('passwordPolicy')) {
+      return 'A senha deve ter no mínimo 8 caracteres, com letra maiúscula, letra minúscula, número e caractere especial.';
+    }
+
+    if (this.registerForm.hasError('passwordMismatch')) {
+      return 'As senhas informadas não conferem.';
+    }
+
+    if (!this.selectedDocument) {
+      return 'Anexe o documento de identificação para continuar.';
+    }
+
+    if (this.registerForm.get('acceptedTerms')?.invalid) {
+      return 'Aceite os termos de uso e a política de privacidade para continuar.';
+    }
+
+    return 'Preencha todos os campos obrigatórios para continuar.';
   }
 
   private convertFileToBase64(file: File): Promise<string> {
