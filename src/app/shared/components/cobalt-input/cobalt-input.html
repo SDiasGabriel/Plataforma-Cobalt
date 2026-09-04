@@ -1,4 +1,8 @@
-<label class="cobalt-input" [class.cobalt-input--full]="fullWidth">
+<label
+  class="cobalt-input"
+  [class.cobalt-input--full]="fullWidth"
+  [class.cobalt-input--invalid]="invalid"
+>
   @if (label) {
     <span class="cobalt-input__label">{{ label }}</span>
   }
@@ -10,6 +14,7 @@
       [placeholder]="placeholder"
       [disabled]="disabled"
       [readOnly]="readonly"
+      [attr.maxlength]="maxlength"
       (input)="onInput($event)"
       (blur)="markAsTouched()"
     />

@@ -4,7 +4,10 @@
       class="register-logo"
       src="/assets/images/empty-states/lg-cobalt-positivo.png"
       alt="Cobalt"
-    />
+      onclick="window.location.href='/auth/login'"
+      style="cursor: pointer"
+      title="Voltar para a página de login"
+      />
 
     <h1 id="register-title">Sua conta aberta em instantes.</h1>
     <h2>Vamos começar?</h2>
@@ -29,6 +32,8 @@
           label="CPF"
           formControlName="cpf"
           placeholder="Digite"
+          [maxlength]="14"
+          [invalid]="isCpfInvalid"
         />
 
         <div class="phone-field">
@@ -36,7 +41,9 @@
           <div class="phone-field__controls">
             <label class="country-code">
               <select formControlName="ddi">
-                <option value="055">055</option>
+                @for (country of countryDialCodes; track country.iso) {
+                  <option [value]="country.ddi">{{ country.label }}</option>
+                }
               </select>
             </label>
 
@@ -46,6 +53,7 @@
                 type="tel"
                 formControlName="celular"
                 placeholder="Digite"
+                [maxlength]="15"
               />
             </div>
           </div>
@@ -82,6 +90,7 @@
           [iconEndSrc]="passwordIconSrc"
           iconEndAlt="Mostrar ou ocultar senha"
           placeholder="Digite"
+          [invalid]="isPasswordInvalid"
           [iconEndButton]="true"
           (iconEndClick)="togglePasswordVisibility()"
         />
@@ -94,6 +103,7 @@
           iconEndAlt="Mostrar ou ocultar senha"
           [iconEndButton]="true"
           placeholder="Digite"
+          [invalid]="isConfirmPasswordInvalid"
           (iconEndClick)="toggleConfirmPasswordVisibility()"
         />
       </div>

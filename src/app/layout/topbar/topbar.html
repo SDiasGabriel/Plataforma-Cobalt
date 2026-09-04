@@ -7,7 +7,13 @@
       <span class="topbar__dot" aria-hidden="true"></span>
     </button>
 
-    <button class="topbar__button" type="button" aria-label="Sair" (click)="logout()">
+    <button
+      class="topbar__button"
+      type="button"
+      aria-label="Sair"
+      [disabled]="isLoggingOut"
+      (click)="logout()"
+    >
       <img src="/assets/icons/navigation/ico_logout.svg" alt="" />
     </button>
   </div>

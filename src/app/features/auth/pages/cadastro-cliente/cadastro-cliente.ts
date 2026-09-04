@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, NonNullableFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -7,6 +8,8 @@ import { ErrorDialogService } from '../../../../core/services/error-dialog.servi
 import { SuccessDialogService } from '../../../../core/services/success-dialog.service';
 import { Register } from '../../models/register.model';
 import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
+import { COUNTRY_DIAL_CODES } from '../../../../shared/constants/country-dial-codes';
+import { cpfValidator, onlyCpfDigits } from '../../../../shared/validators/cpf.validator';
 
 @Component({
   selector: 'app-cadastro-cliente',
@@ -23,11 +26,12 @@ export class CadastroCliente {
   private readonly errorDialogService = inject(ErrorDialogService);
   private readonly successDialogService = inject(SuccessDialogService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   registerForm = this.formBuilder.group({
     apelido: ['', Validators.required],
     nome: ['', Validators.required],
-    cpf: ['', Validators.required],
+    cpf: ['', [Validators.required, cpfValidator()]],
     ddi: ['55', Validators.required],
     celular: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
@@ -37,13 +41,55 @@ export class CadastroCliente {
   }, { validators: this.passwordMatchValidator });
 
   isLoading = false;
+  readonly countryDialCodes = COUNTRY_DIAL_CODES;
   showPassword = false;
   showConfirmPassword = false;
   selectedDocument: File | null = null;
   selectedDocumentName = '';
 
+  constructor() {
+    this.registerForm.get('cpf')?.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => {
+        this.formatControlValue('cpf', this.formatCpf(value));
+      });
+
+    this.registerForm.get('celular')?.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((value) => {
+        this.formatControlValue('celular', this.formatPhone(value));
+      });
+  }
+
   get canSubmit(): boolean {
     return this.registerForm.valid && !!this.selectedDocument && !this.isLoading;
+  }
+
+  get isPasswordInvalid(): boolean {
+    const passwordControl = this.registerForm.get('senha');
+
+    return !!passwordControl
+      && passwordControl.hasError('passwordPolicy')
+      && (passwordControl.dirty || passwordControl.touched);
+  }
+
+  get isConfirmPasswordInvalid(): boolean {
+    const passwordControl = this.registerForm.get('senha');
+    const confirmPasswordControl = this.registerForm.get('confirmarSenha');
+
+    return !!passwordControl
+      && !!confirmPasswordControl
+      && passwordControl.valid
+      && this.registerForm.hasError('passwordMismatch')
+      && (confirmPasswordControl.dirty || confirmPasswordControl.touched);
+  }
+
+  get isCpfInvalid(): boolean {
+    const cpfControl = this.registerForm.get('cpf');
+
+    return !!cpfControl
+      && cpfControl.invalid
+      && (cpfControl.dirty || cpfControl.touched);
   }
 
   get passwordType(): 'password' | 'text' {
@@ -134,8 +180,8 @@ export class CadastroCliente {
     const payload: Register = {
       apelido: formValue.apelido,
       nome: formValue.nome,
-      cpf: formValue.cpf,
-      telefone: `${formValue.ddi} ${formValue.celular}`,
+      cpf: onlyCpfDigits(formValue.cpf),
+      telefone: `${formValue.ddi} ${this.onlyDigits(formValue.celular)}`,
       email: formValue.email,
       senha: formValue.senha,
       documento,
@@ -147,9 +193,9 @@ export class CadastroCliente {
         this.isLoading = false;
       }))
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.successDialogService.open({
-            message: response.mensagem ?? 'Cadastro realizado com sucesso.',
+            message: 'Cadastro feito com sucesso.',
           });
           this.router.navigateByUrl('/auth/login');
         },
@@ -163,6 +209,56 @@ export class CadastroCliente {
     this.selectedDocument = null;
     this.selectedDocumentName = '';
     fileInput.value = '';
+  }
+
+  private formatControlValue(controlName: 'cpf' | 'celular', formattedValue: string): void {
+    const control = this.registerForm.get(controlName);
+
+    if (control?.value === formattedValue) {
+      return;
+    }
+
+    control?.setValue(formattedValue, { emitEvent: false });
+  }
+
+  private formatCpf(value: string): string {
+    const digits = this.onlyDigits(value).slice(0, 11);
+
+    if (digits.length <= 3) {
+      return digits;
+    }
+
+    if (digits.length <= 6) {
+      return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+    }
+
+    if (digits.length <= 9) {
+      return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+    }
+
+    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+  }
+
+  private formatPhone(value: string): string {
+    const digits = this.onlyDigits(value).slice(0, 11);
+
+    if (digits.length <= 2) {
+      return digits ? `(${digits}` : '';
+    }
+
+    if (digits.length <= 6) {
+      return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    }
+
+    if (digits.length <= 10) {
+      return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+    }
+
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+  }
+
+  private onlyDigits(value: string): string {
+    return value.replace(/\D/g, '');
   }
 
   private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -193,6 +289,10 @@ export class CadastroCliente {
   }
 
   private getRegisterValidationMessage(): string {
+    if (this.registerForm.get('cpf')?.hasError('cpf')) {
+      return 'Informe um CPF válido para continuar.';
+    }
+
     if (this.registerForm.get('email')?.hasError('email')) {
       return 'Informe um e-mail válido para continuar.';
     }

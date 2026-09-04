@@ -41,6 +41,21 @@
   box-shadow: 0 0 0 3px rgb(52 52 232 / 12%);
 }
 
+.cobalt-input--invalid .cobalt-input__label {
+  color: #d92d20;
+}
+
+.cobalt-input--invalid .cobalt-input__control {
+  background: #fff5f5;
+  border-color: #d92d20;
+  box-shadow: 0 0 0 3px rgb(217 45 32 / 10%);
+}
+
+.cobalt-input--invalid .cobalt-input__control:focus-within {
+  border-color: #d92d20;
+  box-shadow: 0 0 0 3px rgb(217 45 32 / 14%);
+}
+
 .cobalt-input__control input {
   background: transparent;
   border: 0;

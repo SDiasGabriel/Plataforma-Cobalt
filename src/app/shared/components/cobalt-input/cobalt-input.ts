@@ -24,6 +24,8 @@ export class CobaltInput implements ControlValueAccessor {
   @Input() iconEndAlt = '';
   @Input() iconEndButton = false;
   @Input() disabled = false;
+  @Input() invalid = false;
+  @Input() maxlength: number | null = null;
   @Input() readonly = false;
   @Input() fullWidth = true;
 

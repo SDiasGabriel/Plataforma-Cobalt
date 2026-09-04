@@ -43,7 +43,16 @@ export class AuthService {
       .pipe(timeout(150000));
   }
 
-  logout(): void {
+  logout(): Observable<void> {
+    return this.http
+      .post<void>(`${this.apiUrl}/api/Autenticacao/Logout`, {})
+      .pipe(
+        timeout(150000),
+        tap(() => this.clearSession()),
+      );
+  }
+
+  clearSession(): void {
     this.userSessionService.clear();
 
     if (!this.isBrowser()) {
@@ -81,7 +90,7 @@ export class AuthService {
       return;
     }
 
-    this.logout();
+    this.clearSession();
     const storage = keepLogged ? localStorage : sessionStorage;
 
     if (response.token) {

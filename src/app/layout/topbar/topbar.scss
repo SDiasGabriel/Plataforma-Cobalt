@@ -49,6 +49,11 @@
   width: 22px;
 }
 
+.topbar__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .topbar__dot {
   background: #3434e8;
   border: 2px solid #fff;
