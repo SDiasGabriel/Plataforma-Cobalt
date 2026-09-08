@@ -6,10 +6,10 @@ import { finalize } from 'rxjs';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ErrorDialogService } from '../../../../core/services/error-dialog.service';
 import { SuccessDialogService } from '../../../../core/services/success-dialog.service';
-import { Register } from '../../models/register.model';
-import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
 import { COUNTRY_DIAL_CODES } from '../../../../shared/constants/country-dial-codes';
+import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
 import { cpfValidator, onlyCpfDigits } from '../../../../shared/validators/cpf.validator';
+import { Register } from '../../models/register.model';
 
 @Component({
   selector: 'app-cadastro-cliente',
@@ -92,6 +92,50 @@ export class CadastroCliente {
       && (cpfControl.dirty || cpfControl.touched);
   }
 
+  get cpfErrorMessage(): string {
+    const cpfControl = this.registerForm.get('cpf');
+
+    if (!cpfControl || !(cpfControl.dirty || cpfControl.touched)) {
+      return '';
+    }
+
+    if (cpfControl.hasError('required')) {
+      return 'Informe seu CPF.';
+    }
+
+    if (cpfControl.hasError('cpf')) {
+      return 'CPF invalido.';
+    }
+
+    return '';
+  }
+
+  get isEmailInvalid(): boolean {
+    const emailControl = this.registerForm.get('email');
+
+    return !!emailControl
+      && emailControl.invalid
+      && (emailControl.dirty || emailControl.touched);
+  }
+
+  get emailErrorMessage(): string {
+    const emailControl = this.registerForm.get('email');
+
+    if (!emailControl || !(emailControl.dirty || emailControl.touched)) {
+      return '';
+    }
+
+    if (emailControl.hasError('required')) {
+      return 'Informe seu e-mail.';
+    }
+
+    if (emailControl.hasError('email')) {
+      return 'E-mail invalido.';
+    }
+
+    return '';
+  }
+
   get passwordType(): 'password' | 'text' {
     return this.showPassword ? 'text' : 'password';
   }
@@ -154,7 +198,7 @@ export class CadastroCliente {
     this.clearDocumentInput(fileInput);
   }
 
-  async submitRegister(): Promise<void> {
+  submitRegister(): void {
     if (this.registerForm.invalid || !this.selectedDocument) {
       this.registerForm.markAllAsTouched();
       this.errorDialogService.open({
@@ -165,26 +209,14 @@ export class CadastroCliente {
 
     this.isLoading = true;
     const formValue = this.registerForm.getRawValue();
-    let documento: string | null = null;
-
-    try {
-      documento = await this.convertFileToBase64(this.selectedDocument);
-    } catch {
-      this.isLoading = false;
-      this.errorDialogService.open({
-        message: 'Não foi possível ler o documento selecionado.',
-      });
-      return;
-    }
-
     const payload: Register = {
       apelido: formValue.apelido,
       nome: formValue.nome,
-      cpf: onlyCpfDigits(formValue.cpf),
+      Cpf: onlyCpfDigits(formValue.cpf),
       telefone: `${formValue.ddi} ${this.onlyDigits(formValue.celular)}`,
       email: formValue.email,
       senha: formValue.senha,
-      documento,
+      documento: this.selectedDocument,
       versaoTermos: this.termsVersion,
     };
 
@@ -314,18 +346,5 @@ export class CadastroCliente {
     }
 
     return 'Preencha todos os campos obrigatórios para continuar.';
-  }
-
-  private convertFileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        const result = reader.result?.toString() ?? '';
-        resolve(result.includes(',') ? result.split(',')[1] : result);
-      };
-      reader.onerror = () => reject(reader.error);
-      reader.readAsDataURL(file);
-    });
   }
 }

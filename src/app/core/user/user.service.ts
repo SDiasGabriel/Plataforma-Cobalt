@@ -10,6 +10,7 @@ type CurrentUserApi = CurrentUser & {
   Nome?: string;
   Telefone?: string;
   Status?: boolean;
+  StatusDocumento?: number;
   Acesso?: number;
   DataCadastro?: string;
   DataAlteracao?: string;
@@ -49,6 +50,11 @@ export class UserService {
       nome: user.nome ?? user.Nome ?? response.nome ?? response.Nome,
       telefone: user.telefone ?? user.Telefone ?? response.telefone ?? response.Telefone,
       status: user.status ?? user.Status ?? response.status ?? response.Status,
+      statusDocumento:
+        user.statusDocumento
+        ?? user.StatusDocumento
+        ?? response.statusDocumento
+        ?? response.StatusDocumento,
       acesso: user.acesso ?? user.Acesso ?? response.acesso ?? response.Acesso,
       dataCadastro:
         user.dataCadastro ?? user.DataCadastro ?? response.dataCadastro ?? response.DataCadastro,

@@ -1,11 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, map, tap, timeout } from 'rxjs';
 import { Login, LoginResponse } from '../../features/auth/models/login.model';
 import { environment } from '../../../environments/environment';
 import { Register, RegisterResponse } from '../../features/auth/models/register.model';
 import { UserSessionService } from '../user/user-session.service';
+import { SKIP_ERROR_DIALOG } from '../http/http-context-tokens';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,9 @@ export class AuthService {
 
   login(credentials: Login, keepLogged: boolean): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${this.apiUrl}/api/Autenticacao/Login`, credentials)
+      .post<LoginResponse>(`${this.apiUrl}/api/Autenticacao/Login`, credentials, {
+        context: new HttpContext().set(SKIP_ERROR_DIALOG, true),
+      })
       .pipe(
         timeout(150000),
         map((response) => {
@@ -39,7 +42,7 @@ export class AuthService {
 
   registerClient(data: Register): Observable<RegisterResponse> {
     return this.http
-      .post<RegisterResponse>(`${this.apiUrl}/api/Usuario/Inserir`, data)
+      .post<RegisterResponse>(`${this.apiUrl}/api/Usuario/Inserir`, this.createRegisterFormData(data))
       .pipe(timeout(150000));
   }
 
@@ -100,6 +103,25 @@ export class AuthService {
     if (response.refreshToken) {
       storage.setItem(this.refreshTokenKey, response.refreshToken);
     }
+  }
+
+  private createRegisterFormData(data: Register): FormData {
+    const formData = new FormData();
+
+    formData.append('apelido', data.apelido);
+    formData.append('nome', data.nome);
+    formData.append('Cpf', data.Cpf);
+    formData.append('telefone', data.telefone);
+    formData.append('email', data.email);
+    formData.append('senha', data.senha);
+    formData.append('versaoTermos', data.versaoTermos);
+    formData.append('documento', data.documento, data.documento.name);
+
+    if (data.StatusDocumento !== undefined) {
+      formData.append('StatusDocumento', String(data.StatusDocumento));
+    }
+
+    return formData;
   }
 
   private isBrowser(): boolean {

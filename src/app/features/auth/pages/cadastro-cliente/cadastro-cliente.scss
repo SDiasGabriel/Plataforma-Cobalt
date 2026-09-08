@@ -1,14 +1,20 @@
 .register-page {
-  align-items: center;
-  background: #fff;
+  align-items: stretch;
+  background: #fbfbfd;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   min-height: 100dvh;
-  padding: 48px 24px;
+  overflow: hidden;
+  padding: 0;
 }
 
 .register-card {
-  width: 890px;
+  background: #fff;
+  box-shadow: 0 3px 80px #00000033;
+  min-height: 100dvh;
+  overflow-y: auto;
+  padding: clamp(56px, 6.3vh, 121px) 0 56px clamp(72px, 10.2vw, 196px);
+  width: min(1880px, calc(100vw - 278px));
 }
 
 .register-logo {
@@ -44,6 +50,7 @@
 .register-form {
   display: flex;
   flex-direction: column;
+  width: 800px;
 }
 
 .form-grid {
@@ -73,19 +80,31 @@
 }
 
 .celular {
-  width: 231px;
+  width: 250px;
 }
 
 .nome-email {
-  width: 550px;
+  width: 460px;
 }
+
+.cpf {
+  width: 315px;
+}
+
 
 app-cobalt-input {
   --cobalt-input-label-font-size: 14px;
   --cobalt-input-label-font-weight: 700;
   --cobalt-input-label-color: #6a6a78;
   --cobalt-input-label-line-height: 18px;
-  --cobalt-input-label-gap: 8px;
+  --cobalt-input-label-gap: 2px;
+}
+
+.field-error {
+  color: #d92d20;
+  font: normal normal 700 12px/16px Hanken Grotesk;
+  letter-spacing: 0;
+  margin: 6px 0 0;
 }
 
 .country-code {
@@ -118,6 +137,7 @@ app-cobalt-input {
   margin-bottom: 30px;
   min-height: 79px;
   padding: 18px 25px;
+  width: 800px;
 }
 
 .security-note span {
@@ -150,6 +170,7 @@ app-cobalt-input {
   display: flex;
   justify-content: space-between;
   margin-bottom: 28px;
+  width: 800px;
 }
 
 .document-row div {
@@ -246,6 +267,7 @@ app-cobalt-input {
   font: normal normal normal 14px/22px Hanken Grotesk;
   gap: 13px;
   padding-top: 24px;
+  width: 800px;
 }
 
 .terms-row input {
@@ -279,6 +301,7 @@ app-cobalt-input {
   justify-content: flex-end;
   margin-top: 31px;
   padding-top: 29px;
+  width: 800px;
 }
 
 .actions-row app-cobalt-button {
@@ -286,18 +309,45 @@ app-cobalt-input {
   height: 56px;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1180px) {
   .register-page {
-    align-items: flex-start;
+    background: #fff;
   }
 
   .register-card {
+    box-shadow: none;
+    padding: 72px 40px;
+    width: 100%;
+  }
+
+  .register-form,
+  .security-note,
+  .document-row,
+  .terms-row,
+  .actions-row {
+    max-width: 800px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .register-page {
+    align-items: flex-start;
+    background: #fff;
+    justify-content: center;
+  }
+
+  .register-card {
+    box-shadow: none;
+    min-height: 100vh;
+    padding: 42px 24px;
     width: min(100%, 680px);
   }
 
   .form-grid,
   .password-grid {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .document-row {

@@ -1,4 +1,4 @@
-export type DashboardStatusKey = 'created' | 'documentsSent' | 'analysis' | 'pending' | 'rejected' | 'approved';
+export type DashboardStatusKey = 'created' | 'analysis' | 'approved' | 'rejected';
 
 export type DashboardStatusConfig = {
   processTitle: string;
@@ -18,14 +18,6 @@ export const DASHBOARD_STATUS_CONFIG: Record<DashboardStatusKey, DashboardStatus
     documentationMessage: 'Envie seu documento de identificação para nossa equipe avaliar.',
     documentationPendingCount: 1,
   },
-  documentsSent: {
-    processTitle: 'Processo de Onboarding em andamento',
-    processDescription: 'Sua documentação foi enviada',
-    statusTitle: 'Documentos enviados',
-    statusDescription: 'Recebemos seus documentos',
-    documentationMessage: 'Seu documento de identificação foi enviado para análise.',
-    documentationPendingCount: 0,
-  },
   analysis: {
     processTitle: 'Processo de Onboarding em andamento',
     processDescription: 'Sua documentação está em análise',
@@ -34,28 +26,26 @@ export const DASHBOARD_STATUS_CONFIG: Record<DashboardStatusKey, DashboardStatus
     documentationMessage: 'Seu documento de identificação está sob análise de nossa equipe.',
     documentationPendingCount: 1,
   },
-  pending: {
-    processTitle: 'Processo de Onboarding com pendência',
-    processDescription: 'Existe uma pendência no seu cadastro',
-    statusTitle: 'Pendência',
-    statusDescription: 'Revise as informações solicitadas',
-    documentationMessage: 'Existe uma pendência na sua documentação.',
-    documentationPendingCount: 1,
-  },
-  rejected: {
-    processTitle: 'Processo de Onboarding com documento reprovado',
-    processDescription: 'Seu documento precisa ser reenviado',
-    statusTitle: 'Documento reprovado',
-    statusDescription: 'Envie um novo documento para continuar',
-    documentationMessage: 'Seu documento foi reprovado. Envie um novo arquivo para análise.',
-    documentationPendingCount: 1,
-  },
   approved: {
     processTitle: 'Processo de Onboarding concluído',
-    processDescription: 'Seu cadastro foi aprovado',
-    statusTitle: 'Aprovado',
+    processDescription: 'Sua documentação foi aceita',
+    statusTitle: 'Aceito',
     statusDescription: 'Seu cadastro está ativo',
-    documentationMessage: 'Sua documentação foi aprovada.',
+    documentationMessage: 'Sua documentação foi aceita.',
     documentationPendingCount: 0,
   },
+  rejected: {
+    processTitle: 'Processo de Onboarding com documento recusado',
+    processDescription: 'Sua documentação foi recusada',
+    statusTitle: 'Recusado',
+    statusDescription: 'Envie um novo documento para continuar',
+    documentationMessage: 'Sua documentação foi recusada. Envie um novo arquivo para análise.',
+    documentationPendingCount: 1,
+  },
+};
+
+export const DASHBOARD_STATUS_BY_DOCUMENT_STATUS: Partial<Record<number, DashboardStatusKey>> = {
+  1: 'analysis',
+  2: 'approved',
+  3: 'rejected',
 };

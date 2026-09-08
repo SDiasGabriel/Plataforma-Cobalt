@@ -5,6 +5,7 @@ import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { ErrorDialogService } from '../services/error-dialog.service';
 import { getApiErrorCode, getApiErrorMessage } from './api-error';
+import { SKIP_ERROR_DIALOG } from './http-context-tokens';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -13,17 +14,21 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error) => {
-      if (error instanceof HttpErrorResponse && error.status === 401) {
+      const skipErrorDialog = req.context.get(SKIP_ERROR_DIALOG);
+
+      if (error instanceof HttpErrorResponse && error.status === 401 && !skipErrorDialog) {
         authService.clearSession();
         router.navigateByUrl('/auth/login');
 
         return throwError(() => error);
       }
 
-      errorDialogService.open({
-        message: getApiErrorMessage(error),
-        code: getApiErrorCode(error),
-      });
+      if (!skipErrorDialog) {
+        errorDialogService.open({
+          message: getApiErrorMessage(error),
+          code: getApiErrorCode(error),
+        });
+      }
 
       return throwError(() => error);
     }),

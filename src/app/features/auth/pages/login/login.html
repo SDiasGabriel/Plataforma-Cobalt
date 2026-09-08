@@ -52,6 +52,7 @@
             type="email"
             formControlName="email"
             placeholder="Digite"
+            [invalid]="isEmailInvalid"
           />
 
           <div class="password-row">
@@ -64,6 +65,7 @@
               [iconEndButton]="true"
               (iconEndClick)="togglePasswordVisibility()"
               placeholder="Digite"
+              [invalid]="isPasswordInvalid"
             />
 
             <a href="/auth/cadastro">Esqueci minha senha</a>
@@ -77,6 +79,10 @@
             />
             <span>Me manter logado neste dispositivo</span>
           </label>
+
+          @if (loginErrorMessage) {
+            <p class="login-form__error">{{ loginErrorMessage }}</p>
+          }
 
           <app-cobalt-button
             [label]="isLoading ? 'Acessando...' : 'Acessar'"

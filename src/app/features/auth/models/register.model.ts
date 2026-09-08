@@ -1,11 +1,12 @@
 export interface Register {
   apelido: string;
   nome: string;
-  cpf: string;
+  Cpf: string;
   telefone: string;
   email: string;
   senha: string;
-  documento: string | null;
+  documento: File;
+  StatusDocumento?: number;
   versaoTermos: string;
 }
 

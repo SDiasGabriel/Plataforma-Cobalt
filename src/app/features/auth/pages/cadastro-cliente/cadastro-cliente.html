@@ -28,13 +28,33 @@
           />
         </div>
 
-        <app-cobalt-input
-          label="CPF"
-          formControlName="cpf"
-          placeholder="Digite"
-          [maxlength]="14"
-          [invalid]="isCpfInvalid"
-        />
+        
+        <div class="cpf">
+          <app-cobalt-input
+            label="CPF"
+            formControlName="cpf"
+            placeholder="Digite"
+            [maxlength]="14"
+            [invalid]="isCpfInvalid"
+          />
+          @if (cpfErrorMessage) {
+            <p class="field-error">{{ cpfErrorMessage }}</p>
+          }
+        </div>
+
+        <div class="nome-email">
+          <app-cobalt-input
+            label="e-mail"
+            type="email"
+            placeholder="Digite"
+            formControlName="email"
+            [invalid]="isEmailInvalid"
+          />
+          @if (emailErrorMessage) {
+            <p class="field-error">{{ emailErrorMessage }}</p>
+          }
+        </div>
+
 
         <div class="phone-field">
           <span class="field-label">Número de Celular</span>
@@ -59,14 +79,7 @@
           </div>
         </div>
 
-        <div class="nome-email">
-          <app-cobalt-input
-            label="e-mail"
-            type="email"
-            placeholder="Digite"
-            formControlName="email"
-          />
-        </div>
+
       </div>
 
       <h3>Senha de Acesso</h3>

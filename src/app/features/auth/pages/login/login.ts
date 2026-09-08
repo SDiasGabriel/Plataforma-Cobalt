@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, EMPTY, finalize } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { getApiErrorCode, getApiErrorMessage } from '../../../../core/http/api-error';
-import { ErrorDialogService } from '../../../../core/services/error-dialog.service';
+import { getApiErrorMessage } from '../../../../core/http/api-error';
 import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
 
 @Component({
@@ -14,6 +15,7 @@ import { SHARED_IMPORTS } from '../../../../shared/shared-imports/shared';
 })
 export class Login {
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
 
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -23,6 +25,21 @@ export class Login {
 
   showPassword = false;
   isLoading = false;
+  loginErrorMessage = '';
+
+  get isEmailInvalid(): boolean {
+    const emailControl = this.loginForm.get('email');
+
+    return !!emailControl
+      && ((emailControl.invalid && (emailControl.dirty || emailControl.touched)) || !!this.loginErrorMessage);
+  }
+
+  get isPasswordInvalid(): boolean {
+    const passwordControl = this.loginForm.get('senha');
+
+    return !!passwordControl
+      && ((passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)) || !!this.loginErrorMessage);
+  }
 
   get passwordInputType(): 'password' | 'text' {
     return this.showPassword ? 'text' : 'password';
@@ -40,21 +57,28 @@ export class Login {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly errorDialogService: ErrorDialogService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-  ) {}
+  ) {
+    this.loginForm.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        if (this.loginErrorMessage) {
+          this.loginErrorMessage = '';
+        }
+      });
+  }
 
   submitLogin(): void {
     if (this.isLoading) {
       return;
     }
 
+    this.loginErrorMessage = '';
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.errorDialogService.open({
-        message: 'Preencha seu e-mail e senha para acessar.',
-      });
+      this.loginErrorMessage = 'Preencha seu e-mail e senha para acessar.';
       return;
     }
 
@@ -66,18 +90,21 @@ export class Login {
         Email: email,
         Senha: senha,
       }, keepLogged)
+      .pipe(
+        catchError((error) => {
+          this.loginForm.markAllAsTouched();
+          this.loginErrorMessage = getApiErrorMessage(error, 'E-mail ou senha inválidos.');
+
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.isLoading = false;
+        }),
+      )
       .subscribe({
         next: () => {
-          this.isLoading = false;
           const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/dashboard';
           this.router.navigateByUrl(returnUrl);
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorDialogService.open({
-            message: getApiErrorMessage(error, 'E-mail ou senha inválidos.'),
-            code: getApiErrorCode(error),
-          });
         },
       });
   }

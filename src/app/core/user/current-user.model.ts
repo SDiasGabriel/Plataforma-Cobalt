@@ -4,6 +4,7 @@ export interface CurrentUser {
   nome?: string;
   telefone?: string;
   status?: boolean;
+  statusDocumento?: number;
   acesso?: number;
   dataCadastro?: string;
   dataAlteracao?: string;
