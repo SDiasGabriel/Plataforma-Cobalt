@@ -19,8 +19,13 @@
       <span>Dashboard</span>
     </a>
 
-    <a class="sidebar__link sidebar__link--muted" routerLink="/empresas">
-      <img src="/assets/icons/navigation/ico_empresa_grey.svg" alt="" />
+    <a
+      class="sidebar__link sidebar__link--muted"
+      routerLink="/empresas"
+      routerLinkActive="sidebar__link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <img src="/assets/icons/actions/ico_empresa_blue.svg" alt="" />
       <span>Empresas</span>
     </a>
 

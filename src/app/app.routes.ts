@@ -29,12 +29,11 @@ export const routes: Routes = [
       //   loadChildren: () =>
       //     import('./features/clients/clients.routes').then((m) => m.CLIENTS_ROUTES),
       // },
-      // Quando o modulo de empresas for criado:
-      // {
-      //   path: 'empresas',
-      //   loadChildren: () =>
-      //     import('./features/companies/companies.routes').then((m) => m.COMPANIES_ROUTES),
-      // },
+      {
+        path: 'empresas',
+        loadChildren: () =>
+          import('./features/companies/companies.routes').then((m) => m.COMPANIES_ROUTES),
+      },
       // Quando o modulo de documentos for criado:
       // {
       //   path: 'documentos',

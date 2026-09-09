@@ -75,6 +75,7 @@
 .sidebar__link img {
   display: block;
   flex: 0 0 auto;
+  filter: grayscale(1) opacity(0.48);
   height: 24px;
   object-fit: contain;
   width: 24px;
@@ -90,8 +91,16 @@
   color: #b6b6c7;
 }
 
+.sidebar__link:not(.sidebar__link--active) {
+  color: #b6b6c7;
+}
+
 .sidebar__link--active {
   color: #242430;
+}
+
+.sidebar__link--active img {
+  filter: invert(20%) sepia(99%) saturate(4397%) hue-rotate(241deg) brightness(96%) contrast(91%);
 }
 
 .sidebar__badge {

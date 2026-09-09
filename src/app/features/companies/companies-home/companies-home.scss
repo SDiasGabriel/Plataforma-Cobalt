@@ -1,0 +1,109 @@
+.companies-page {
+  background: #f8f8fa;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: calc(100vh - 116px);
+}
+
+.companies-page__content {
+  min-width: 0;
+  padding: 45px 100px 64px 65px;
+}
+
+.companies-page__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 31px;
+}
+
+.companies-page__header h2 {
+  align-items: center;
+  color: #050a17;
+  display: flex;
+  font: normal normal normal 24px/40px Hanken Grotesk;
+  gap: 7px;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.companies-page__header h2 span {
+  color: #242430;
+  font: normal normal normal 24px/40px Hanken Grotesk;
+}
+
+.companies-page__header h2 strong {
+  color: #050a17;
+  font: normal normal bold 24px/40px Hanken Grotesk;
+}
+
+.companies-page__header app-cobalt-button {
+  width: 227px;
+}
+
+.companies-page__header app-cobalt-button ::ng-deep .cobalt-button {
+  border-radius: 6px;
+  color: #fff;
+  font: normal normal bold 22px/26px Hanken Grotesk;
+  height: 60px;
+  width: 227px;
+}
+
+.companies-empty {
+  align-items: center;
+  background: #e6f6ff;
+  border-radius: 6px;
+  color: #1e2843;
+  display: flex;
+  gap: 26px;
+  min-height: 64px;
+  padding: 0 31px;
+  width: 100%;
+}
+
+.companies-empty img {
+  display: block;
+  flex: 0 0 auto;
+  height: 31px;
+  object-fit: contain;
+  width: 31px;
+}
+
+.companies-empty p,
+.companies-empty strong {
+  color: #1e2843;
+  font: normal normal normal 20px/16px Hanken Grotesk;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.companies-empty strong {
+  font-weight: 800;
+}
+
+.companies-page__backdrop {
+  background: transparent;
+  border: 0;
+  cursor: default;
+  inset: 0;
+  padding: 0;
+  position: fixed;
+  z-index: 4;
+}
+
+@media (max-width: 900px) {
+  .companies-page__content {
+    padding: 32px 24px;
+  }
+
+  .companies-page__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .companies-page__header app-cobalt-button,
+  .companies-page__header app-cobalt-button ::ng-deep .cobalt-button {
+    width: 100%;
+  }
+}

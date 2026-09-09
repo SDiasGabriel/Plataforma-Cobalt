@@ -21,7 +21,7 @@ export const DASHBOARD_STATUS_CONFIG: Record<DashboardStatusKey, DashboardStatus
   analysis: {
     processTitle: 'Processo de Onboarding em andamento',
     processDescription: 'Sua documentação está em análise',
-    statusTitle: 'Em análise',
+    statusTitle: 'Análise Documentos',
     statusDescription: 'Estamos avaliando seus documentos',
     documentationMessage: 'Seu documento de identificação está sob análise de nossa equipe.',
     documentationPendingCount: 1,
@@ -29,7 +29,7 @@ export const DASHBOARD_STATUS_CONFIG: Record<DashboardStatusKey, DashboardStatus
   approved: {
     processTitle: 'Processo de Onboarding concluído',
     processDescription: 'Sua documentação foi aceita',
-    statusTitle: 'Aceito',
+    statusTitle: 'Documentação Aceita',
     statusDescription: 'Seu cadastro está ativo',
     documentationMessage: 'Sua documentação foi aceita.',
     documentationPendingCount: 0,
@@ -37,7 +37,7 @@ export const DASHBOARD_STATUS_CONFIG: Record<DashboardStatusKey, DashboardStatus
   rejected: {
     processTitle: 'Processo de Onboarding com documento recusado',
     processDescription: 'Sua documentação foi recusada',
-    statusTitle: 'Recusado',
+    statusTitle: 'Documento Recusado',
     statusDescription: 'Envie um novo documento para continuar',
     documentationMessage: 'Sua documentação foi recusada. Envie um novo arquivo para análise.',
     documentationPendingCount: 1,

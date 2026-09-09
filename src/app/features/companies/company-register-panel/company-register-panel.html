@@ -1,0 +1,117 @@
+<aside class="company-register-panel" aria-labelledby="company-register-title">
+  <h2 id="company-register-title"><span>//</span> Cadastrar Nova Empresa</h2>
+
+  <form class="company-form" [formGroup]="companyForm" (ngSubmit)="submitCompany()">
+    <div class="field-group">
+      <app-cobalt-input
+        placeholder="Digite o CNPJ da empresa"
+        label="CNPJ da empresa"
+        formControlName="cnpj"
+        [maxlength]="18"
+        [invalid]="isCnpjInvalid"
+      />
+      @if (cnpjErrorMessage) {
+        <p class="field-error">{{ cnpjErrorMessage }}</p>
+      }
+    </div>
+
+    <app-cobalt-input 
+      placeholder="Digite seu nome fantasia"
+      label="Nome Fantasia" 
+      formControlName="nomeFantasia" />
+
+    <app-cobalt-input 
+      placeholder="Digite sua razao social"
+      label="Razao Social" 
+      formControlName="razaoSocial" />
+
+    <div class="cnae-field" (focusout)="onCnaeBlur()">
+      <app-cobalt-input
+        label="CNAE - Classificacao Nacional das Atividades Economicas"
+        formControlName="cnae"
+        placeholder="Digite o codigo ou descricao do CNAE"
+      />
+
+      @if (isSearchingCnaes) {
+        <div class="cnae-results cnae-results--status">
+          Buscando CNAEs...
+        </div>
+      } @else if (cnaeResults.length) {
+        <ul class="cnae-results">
+          @for (cnae of cnaeResults; track $index) {
+            <li>
+              <button type="button" (mousedown)="selectCnae(cnae)">
+                <strong>{{ cnae.codigo }}</strong>
+                <span>{{ cnae.descricao }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      } @else if (hasSearchedCnaes) {
+        <div class="cnae-results cnae-results--status">
+          Nenhum CNAE encontrado.
+        </div>
+      }
+    </div>
+
+    <fieldset class="owner-field">
+      <legend>Eu sou:</legend>
+
+      <label>
+        <input type="radio" formControlName="perfil" value="socio" />
+        <span>Socio Proprietario</span>
+      </label>
+
+      <label>
+        <input type="radio" formControlName="perfil" value="procurador" />
+        <span>Procurador legal</span>
+      </label>
+    </fieldset>
+
+    <section class="contact-section">
+      <h3>Dados de contato</h3>
+
+      <div class="phone-field">
+        <span class="field-label">Numero de Celular</span>
+        <div class="phone-field__controls">
+          <label class="country-code">
+            <select formControlName="ddi">
+              @for (country of countryDialCodes; track country.iso) {
+                <option [value]="country.ddi">{{ country.label }}</option>
+              }
+            </select>
+          </label>
+
+          <app-cobalt-input
+            placeholder="Digite seu telefone"
+            type="tel"
+            formControlName="celular"
+            [maxlength]="15"
+          />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <app-cobalt-input
+          placeholder="Digite seu e-mail"
+          label="e-mail"
+          type="email"
+          formControlName="email"
+          [invalid]="isEmailInvalid"
+        />
+        @if (emailErrorMessage) {
+          <p class="field-error">{{ emailErrorMessage }}</p>
+        }
+      </div>
+    </section>
+
+    <app-cobalt-button
+      [label]="isLoading ? 'Cadastrando...' : 'Avancar'"
+      type="submit"
+      iconEndSrc="/assets/icons/actions/seta-avancar-branca.svg"
+      iconEndAlt=""
+      [disabled]="!canSubmit"
+      [fullWidth]="false"
+    />
+  </form>
+</aside>

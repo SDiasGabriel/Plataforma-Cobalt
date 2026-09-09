@@ -1,0 +1,32 @@
+<section class="companies-page" [class.companies-page--panel-open]="isRegisterPanelOpen">
+  <div class="companies-page__content">
+    <header class="companies-page__header">
+      <h2><span>//</span> Empresas <strong>Cadastradas</strong></h2>
+
+      @if (!isRegisterPanelOpen) {
+        <app-cobalt-button
+          label="+ Cadastrar nova"
+          size="sm"
+          [fullWidth]="false"
+          (buttonClick)="openRegisterPanel()"
+        />
+      }
+    </header>
+
+    <div class="companies-empty">
+      <img src="/assets/icons/actions/ico_vazio.svg" alt="" />
+      <p>Voce ainda <strong>nao possui</strong> empresas cadastradas!</p>
+    </div>
+  </div>
+
+  @if (isRegisterPanelOpen) {
+    <button
+      class="companies-page__backdrop"
+      type="button"
+      aria-label="Fechar cadastro de empresa"
+      (click)="closeRegisterPanel()"
+    ></button>
+
+    <app-company-register-panel />
+  }
+</section>
